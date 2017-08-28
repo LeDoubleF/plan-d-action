@@ -3,6 +3,7 @@ package core;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -11,10 +12,11 @@ import org.junit.Test;
 import core.Aim;
 import core.Diagram;
 import core.Task;
+import exception.ComplianceException;
 
 @SuppressWarnings("unused")
 public class DiagramTest {
-	Task aim, aim2, taskA, taskB, taskC, taskD;
+	Task aim, taskA, taskB, taskC, taskD;
 
 	List<Task> listForGoodDiagram;
 	Diagram goodDiagram;
@@ -22,7 +24,6 @@ public class DiagramTest {
 	@Before
 	public void initialize() {
 		aim = new Aim("aim");
-		aim2 = new Aim("aim2");
 		taskA = new Task("A");
 		taskB = new Task("B");
 		taskC = new Task("C");
@@ -51,6 +52,8 @@ public class DiagramTest {
 
 	@Test
 	public void diagramCanNotHaveTwoAim() {
+		Task aim2 = new Aim("aim2");
+
 		List<Task> TaskListWithTwoAim = new ArrayList<Task>();
 		TaskListWithTwoAim.add(aim);
 		TaskListWithTwoAim.add(aim2);
@@ -126,6 +129,7 @@ public class DiagramTest {
 
 	@Test
 	public void getFeasibleTask() {
+		assertEquals(5,goodDiagram.getTasks().size());
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskB));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskC));
@@ -151,4 +155,37 @@ public class DiagramTest {
 
 	}
 
+	
+	@Test
+	public void addTaskIsAim() {
+		try {
+			Task aim2 = new Aim("aim2");
+			goodDiagram.addTask(aim2);
+			fail("Should throw exception when you add a  new aim into the diagram");
+		} catch (Exception aExp) {
+			String message = aExp.getMessage();
+			assertTrue(message.contains("You have one and only one aim"));
+		}
+	}
+	
+	@Test
+	public void addTask() {
+			Task taskF = new Task("F");
+			taskF.addNext(taskB);
+			taskF.addNext(taskD);
+			goodDiagram.addTask(taskF);
+			
+			
+			assertEquals(0, aim.getWeight());
+			assertEquals(1, taskD.getWeight());
+			assertEquals(1, taskC.getWeight());
+			assertEquals(2, taskA.getWeight());
+			assertEquals(3, taskB.getWeight());
+			assertEquals(6, taskF.getWeight());
+			
+			assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
+			assertTrue(goodDiagram.getFeasibleTask().contains(taskF));
+			assertTrue(goodDiagram.getFeasibleTask().contains(taskC));
+			assertFalse(goodDiagram.getFeasibleTask().contains(taskB));
+	}
 }

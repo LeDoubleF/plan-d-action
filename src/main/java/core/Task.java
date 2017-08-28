@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import exception.ComplianceException;
+
 public class Task implements Comparable<Task> {
 	private String name;
 	private double progress;
 
 	private int weight;
 	private Type type;
-	private List<Task> previous = new ArrayList<Task>();
-	private List<Task> next = new ArrayList<Task>();
+	private List<Task> previous = new ArrayList<>();
+	private List<Task> next = new ArrayList<>();
 
 	public Task(String name, Type type) {
 		super();
@@ -78,7 +80,7 @@ public class Task implements Comparable<Task> {
 	}
 
 	private void verifyNoCycle(Task task) {
-		List<Task> priors = new ArrayList<Task>();
+		List<Task> priors = new ArrayList<>();
 		if (!hasFinal(task, priors)) {
 			throw new ComplianceException("Shouldn't have cycle");
 		}
@@ -100,6 +102,7 @@ public class Task implements Comparable<Task> {
 			for (Task son : task.getNext()) {
 				result = result && hasFinal(son, priors);
 			}
+			priors.remove(task);
 			return result;
 		} else {
 			return true;

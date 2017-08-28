@@ -5,10 +5,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import exception.ComplianceException;
+
 public class Diagram {
 	private Aim aim;
-	private List<Task> tasks = new ArrayList<Task>();
-	private List<Task> feasibleTask = new ArrayList<Task>();
+	private List<Task> tasks = new ArrayList<>();
+
+	private List<Task> feasibleTask = new ArrayList<>();
 
 	public Diagram(Task aim) {
 		if (aim instanceof Aim) {
@@ -19,6 +22,13 @@ public class Diagram {
 	}
 
 	public Diagram(List<Task> taskList) {
+		addInitiatTasksList(taskList);
+		verifyNotTaskAlone();
+		Collections.sort(this.tasks);
+
+	}
+
+	private void addInitiatTasksList(List<Task> taskList) {
 		int nbAim = 0;
 		for (Task task : taskList) {
 			if (task instanceof Aim) {
@@ -35,11 +45,6 @@ public class Diagram {
 				}
 			}
 		}
-
-		verifyNotTaskAlone();
-
-		Collections.sort(this.tasks);
-
 	}
 
 	private boolean finalIsAim(Task task) {
@@ -66,6 +71,25 @@ public class Diagram {
 		}
 	}
 
+	public void addTask(Task task) {
+		if (task instanceof Aim) {
+			throw new ComplianceException("You have one and only one aim");
+		} else {
+			tasks.add(task);
+			if (!task.hasPrevious()) {
+				feasibleTask.add(task);
+			}
+			for (Task followers:task.getNext()){
+				if (feasibleTask.contains(followers)){
+					feasibleTask.remove(followers);
+				}
+				
+			}
+			verifyNotTaskAlone();
+			Collections.sort(this.tasks);
+		}
+	}
+
 	public Collection<Task> getFeasibleTask() {
 		return feasibleTask;
 	}
@@ -78,9 +102,11 @@ public class Diagram {
 		return this.aim;
 	}
 
-	public void setAim(Aim aim) {
+	private void setAim(Aim aim) {
 		this.aim = aim;
 	}
 
-
+	public List<Task> getTasks() {
+		return tasks;
+	}
 }
