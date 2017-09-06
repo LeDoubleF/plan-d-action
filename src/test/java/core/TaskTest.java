@@ -171,6 +171,26 @@ public class TaskTest {
 	}
 
 	@Test
+	public void isFinalize(){
+		
+		task.setProgress(50);
+		assertTrue(task.getProgress() == 50);
+		assertFalse(task.isFinalize());
+		
+		
+		task.setProgress(85);
+		assertTrue(task.getProgress() == 85);
+		assertTrue(task.isFinalize());
+		
+		task.setProgress(10);
+		assertTrue(task.getProgress() == 10);
+		task.finalize();
+		assertTrue(task.getProgress() == 100);
+		assertTrue(task.isFinalize());
+		
+	}
+	
+	@Test
 	public void shouldNotHaveCycle() {
 		try {
 			Task aim, taskA, taskB, taskC, taskD;

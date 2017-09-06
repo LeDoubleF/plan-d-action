@@ -8,6 +8,7 @@ import java.util.List;
 import exception.ComplianceException;
 
 public class Diagram {
+	private static final String YOU_HAVE_ONE_AND_ONLY_ONE_AIM = "You have one and only one aim";
 	private Aim aim;
 	private List<Task> tasks = new ArrayList<>();
 
@@ -17,7 +18,7 @@ public class Diagram {
 		if (aim instanceof Aim) {
 			this.setAim((Aim) aim);
 		} else {
-			throw new ComplianceException("You have one and only one aim");
+			throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
 		}
 	}
 
@@ -34,7 +35,7 @@ public class Diagram {
 			if (task instanceof Aim) {
 				nbAim++;
 				if (nbAim > 1) {
-					throw new ComplianceException("You have one and only one aim");
+					throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
 				}
 				this.setAim((Aim) task);
 				tasks.add(task);
@@ -45,6 +46,12 @@ public class Diagram {
 				}
 			}
 		}
+		sortList();
+	}
+
+	private void sortList() {
+		Collections.sort(this.tasks);
+		Collections.sort(this.feasibleTask);
 	}
 
 	private boolean finalIsAim(Task task) {
@@ -73,20 +80,20 @@ public class Diagram {
 
 	public void addTask(Task task) {
 		if (task instanceof Aim) {
-			throw new ComplianceException("You have one and only one aim");
+			throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
 		} else {
 			tasks.add(task);
 			if (!task.hasPrevious()) {
 				feasibleTask.add(task);
 			}
-			for (Task followers:task.getNext()){
-				if (feasibleTask.contains(followers)){
+			for (Task followers : task.getNext()) {
+				if (feasibleTask.contains(followers)) {
 					feasibleTask.remove(followers);
 				}
-				
+
 			}
 			verifyNotTaskAlone();
-			Collections.sort(this.tasks);
+			sortList();
 		}
 	}
 
@@ -108,5 +115,17 @@ public class Diagram {
 
 	public List<Task> getTasks() {
 		return tasks;
+	}
+
+	public void finalize(Task task) {
+		if (tasks.contains(task)) {
+			task.finalize();
+			if (feasibleTask.contains(task)) {
+				feasibleTask.remove(task);
+			}    
+			Collections.sort(this.feasibleTask);
+		} else {
+			throw new ComplianceException("the task is not in diagram");
+		}
 	}
 }

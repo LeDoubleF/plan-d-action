@@ -41,6 +41,28 @@ public class Task implements Comparable<Task> {
 
 	public void setProgress(double progress) {
 		this.progress = progress;
+		if(isFinalize()){
+			for(Task followers:getNext()){
+				int nbPortion=followers.previous.size()+1;
+				double increment=100/nbPortion+	followers.getProgress();
+				followers.setProgress(increment);
+				followers.previous.remove(this);
+			}
+			
+		}
+	}
+
+	public void finalize() {
+		setProgress(100);
+		
+	}
+
+	public boolean isFinalize() {
+		if (progress > 75) {
+			return true;
+		}
+		return false;
+
 	}
 
 	public int getWeight() {
