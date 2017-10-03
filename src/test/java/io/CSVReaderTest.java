@@ -1,14 +1,17 @@
 package io;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import org.junit.Test;
 
-import core.Aim;
 import core.Diagram;
 import core.Task;
+import exception.FileReaderException;
 
 public class CSVReaderTest {
 
@@ -27,6 +30,8 @@ public class CSVReaderTest {
 		assertTrue(fileContent.contains("D/[aim]"));
 
 		Diagram goodDiagram = csvReader.getDiagram();
+		Collection<Task> feasibleTask = goodDiagram.getFeasibleTask();
+		assertEquals(3, feasibleTask.size());
 	}
 
 	@SuppressWarnings("unused")
@@ -44,7 +49,6 @@ public class CSVReaderTest {
 			assertTrue(message.contains("erreur dans les donées du fichier"));
 		}
 	}
-	@SuppressWarnings("unused")
 	@Test
 	public void readEmptyFile() throws IOException {
 		String fileName = "csvReaderEmptyEntry.cvs";
@@ -64,7 +68,7 @@ public class CSVReaderTest {
 			CSVReader csvReader = new CSVReader(fileName);
 			
 			fail("Should throw exception when the file is not ok");
-		} catch (Exception aExp) {
+		} catch (FileReaderException aExp) {
 			String message = aExp.getMessage();
 			assertTrue(message.contains("Le fichier est introuvable"));
 		}

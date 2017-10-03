@@ -117,9 +117,9 @@ public class Diagram {
 		return tasks;
 	}
 
-	public void finalize(Task task) {
+	public void finish(Task task) {
 		if (tasks.contains(task)) {
-			task.finalize();
+			task.finish();
 			if (feasibleTask.contains(task)) {
 				feasibleTask.remove(task);
 			}    

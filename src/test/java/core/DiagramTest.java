@@ -193,7 +193,7 @@ public class DiagramTest {
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskB));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskC));
-		goodDiagram.finalize(taskB);
+		goodDiagram.finish(taskB);
 		assertEquals(5, goodDiagram.getTasks().size());
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskC));

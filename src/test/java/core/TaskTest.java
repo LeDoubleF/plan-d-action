@@ -184,7 +184,7 @@ public class TaskTest {
 		
 		task.setProgress(10);
 		assertTrue(task.getProgress() == 10);
-		task.finalize();
+		task.finish();
 		assertTrue(task.getProgress() == 100);
 		assertTrue(task.isFinalize());
 		
