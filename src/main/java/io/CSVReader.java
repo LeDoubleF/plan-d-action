@@ -79,7 +79,7 @@ tasksInfo = readFile(filePath);
 				}
 				value.put(tabChaine[0], next);
 			}
-			fichierSource.close();
+
 		} catch (FileNotFoundException e) {
 			throw new FileReaderException("Le fichier est introuvable !");
 		}

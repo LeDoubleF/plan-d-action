@@ -3,6 +3,7 @@ package core;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -188,14 +189,82 @@ public class DiagramTest {
 	}
 
 	@Test
-	public void finalizeTask() {
+	public void finishTasknotInDiagram() {
+
+		
+		try {
+			Task taskF = new Task("F");
+			goodDiagram.finish(taskF);
+			fail("Should throw exception when you finish a task which is not into the diagram");
+		} catch (Exception aExp) {
+			String message = aExp.getMessage();
+			assertTrue(message.contains("the task is not in diagram"));
+		}
+	}
+	@Test
+	public void finishTaskinFeasibleTask() {
+		Collection<Task> feasibleTask = goodDiagram.getFeasibleTask();
 		assertEquals(5, goodDiagram.getTasks().size());
-		assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
-		assertTrue(goodDiagram.getFeasibleTask().contains(taskB));
-		assertTrue(goodDiagram.getFeasibleTask().contains(taskC));
+		assertTrue(feasibleTask.contains(taskA));
+		assertTrue(feasibleTask.contains(taskB));
+		assertTrue(feasibleTask.contains(taskC));
+		
 		goodDiagram.finish(taskB);
 		assertEquals(5, goodDiagram.getTasks().size());
+		assertEquals(2, feasibleTask.size());
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskA));
 		assertTrue(goodDiagram.getFeasibleTask().contains(taskC));
+	}
+
+	@Test
+	public void finishTaskInTheMiddle1() {
+		Collection<Task> feasibleTask = goodDiagram.getFeasibleTask();
+		assertEquals(5, goodDiagram.getTasks().size());
+		assertTrue(feasibleTask.contains(taskA));
+		assertTrue(feasibleTask.contains(taskB));
+		assertTrue(feasibleTask.contains(taskC));
+
+		goodDiagram.finish(taskD);
+		feasibleTask = goodDiagram.getFeasibleTask();
+
+		assertEquals(5, goodDiagram.getTasks().size());
+		assertEquals(2, feasibleTask.size());
+		assertTrue(feasibleTask.contains(taskB));
+		assertTrue(feasibleTask.contains(taskC));
+	}
+
+	@Test
+	public void finishTaskInTheMiddle2() {
+		aim = new Aim("aim");
+		taskA = new Task("A");
+		taskB = new Task("B");
+		taskC = new Task("C");
+		taskD = new Task("D");
+
+		taskA.addNext(taskD);
+		taskB.addNext(taskD);
+		taskC.addNext(aim);
+		taskD.addNext(aim);
+
+		listForGoodDiagram = new ArrayList<Task>();
+		listForGoodDiagram.add(taskA);
+		listForGoodDiagram.add(taskB);
+		listForGoodDiagram.add(taskC);
+		listForGoodDiagram.add(taskD);
+		listForGoodDiagram.add(aim);
+		goodDiagram = new Diagram(listForGoodDiagram);
+		
+		Collection<Task> feasibleTask = goodDiagram.getFeasibleTask();
+		assertEquals(5, goodDiagram.getTasks().size());
+		assertTrue(feasibleTask.contains(taskA));
+		assertTrue(feasibleTask.contains(taskB));
+		assertTrue(feasibleTask.contains(taskC));
+
+		goodDiagram.finish(taskD);
+		feasibleTask = goodDiagram.getFeasibleTask();
+
+		assertEquals(5, goodDiagram.getTasks().size());
+		assertEquals(1, feasibleTask.size());
+		assertTrue(feasibleTask.contains(taskC));
 	}
 }

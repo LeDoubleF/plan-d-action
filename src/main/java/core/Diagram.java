@@ -122,10 +122,27 @@ public class Diagram {
 			task.finish();
 			if (feasibleTask.contains(task)) {
 				feasibleTask.remove(task);
-			}    
+			}  
+			else{
+				removePreviousFromFeasibleTask(task);
+			}
 			Collections.sort(this.feasibleTask);
 		} else {
 			throw new ComplianceException("the task is not in diagram");
+		}
+	}
+
+	private void removePreviousFromFeasibleTask(Task task) {
+		for(Task previous:task.getPrevious()){
+			boolean remove=true;
+			for(Task next:previous.getNext()){
+				if(next!=task && !next.isFinish() ){
+					remove=false;
+				}
+			}
+			if(remove){
+				feasibleTask.remove(previous);
+			}
 		}
 	}
 }

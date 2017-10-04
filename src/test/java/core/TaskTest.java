@@ -45,12 +45,6 @@ public class TaskTest {
 		assertEquals(NEW_NAME, task.getName());
 	}
 
-	@Test
-	public void tastHasTheGodType() {
-		assertEquals(Type.BINARY, task.getType());
-		task.setType(Type.REPETITIVE);
-		assertEquals(Type.REPETITIVE, task.getType());
-	}
 
 	@Test
 	public void successiveAddition() {
@@ -162,12 +156,6 @@ public class TaskTest {
 		d.setProgress(50);
 		assertEquals(a, d);
 
-		a.setType(Type.WITH_STAGE);
-		assertFalse(a.equals(d));
-
-		d.setType(Type.WITH_STAGE);
-		assertEquals(a, d);
-		
 	}
 
 	@Test
@@ -175,18 +163,18 @@ public class TaskTest {
 		
 		task.setProgress(50);
 		assertTrue(task.getProgress() == 50);
-		assertFalse(task.isFinalize());
+		assertFalse(task.isFinish());
 		
 		
 		task.setProgress(85);
 		assertTrue(task.getProgress() == 85);
-		assertTrue(task.isFinalize());
+		assertTrue(task.isFinish());
 		
 		task.setProgress(10);
 		assertTrue(task.getProgress() == 10);
 		task.finish();
 		assertTrue(task.getProgress() == 100);
-		assertTrue(task.isFinalize());
+		assertTrue(task.isFinish());
 		
 	}
 	

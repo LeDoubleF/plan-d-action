@@ -11,20 +11,14 @@ public class Task implements Comparable<Task> {
 	private double progress;
 
 	private int weight;
-	private Type type;
 	private List<Task> previous = new ArrayList<>();
 	private List<Task> next = new ArrayList<>();
 
-	public Task(String name, Type type) {
+	public Task(String name) {
 		super();
 		if (name == null || name.trim().equals(""))
 			throw new ComplianceException("A task should have a name");
 		this.name = name.trim();
-		this.type = type;
-	}
-
-	public Task(String name) {
-		this(name, Type.BINARY);
 	}
 
 	public String getName() {
@@ -41,7 +35,7 @@ public class Task implements Comparable<Task> {
 
 	public void setProgress(double progress) {
 		this.progress = progress;
-		if (isFinalize()) {
+		if (isFinish()) {
 			for (Task followers : getNext()) {
 				int nbPortion = followers.previous.size() + 1;
 				double increment = (100f / nbPortion) + followers.getProgress();
@@ -57,7 +51,7 @@ public class Task implements Comparable<Task> {
 
 	}
 
-	public boolean isFinalize() {
+	public boolean isFinish() {
 		return (progress > 75);
 	}
 
@@ -65,13 +59,6 @@ public class Task implements Comparable<Task> {
 		return weight;
 	}
 
-	public Type getType() {
-		return type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
 
 	public List<Task> getPrevious() {
 		return previous;
@@ -153,7 +140,7 @@ public class Task implements Comparable<Task> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, progress, weight, type, previous, next);
+		return Objects.hash(name, progress, weight, previous, next);
 	}
 
 	@Override
@@ -168,8 +155,7 @@ public class Task implements Comparable<Task> {
 		if (getClass() != obj.getClass())
 			return false;
 		Task other = (Task) obj;
-		return Objects.equals(name, other.name) && Objects.equals(progress, other.progress)
-				&& Objects.equals(type, other.type);
+		return Objects.equals(name, other.name) && Objects.equals(progress, other.progress);
 	}
 
 }
