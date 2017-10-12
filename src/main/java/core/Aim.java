@@ -3,10 +3,10 @@ package core;
 import java.util.Collections;
 import java.util.List;
 
+import exception.Message;
+
 public class Aim extends Task{
 	
-	private static final String ERROR_NO_NEXT = "a aim can't have next";
-
 	public Aim(String name) {
 		super(name);
 	}
@@ -18,7 +18,7 @@ public class Aim extends Task{
 	
 	@Override
 	public void addNext(Task next) {
-		 throw new UnsupportedOperationException(ERROR_NO_NEXT);	
+		 throw new UnsupportedOperationException(Message.ERROR_NO_NEXT);	
 	}
 
 	@Override

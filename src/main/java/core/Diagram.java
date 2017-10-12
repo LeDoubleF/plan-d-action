@@ -6,9 +6,10 @@ import java.util.Collections;
 import java.util.List;
 
 import exception.ComplianceException;
+import exception.Message;
 
 public class Diagram {
-	private static final String YOU_HAVE_ONE_AND_ONLY_ONE_AIM = "You have one and only one aim";
+
 	private Aim aim;
 	private List<Task> tasks = new ArrayList<>();
 
@@ -18,7 +19,7 @@ public class Diagram {
 		if (aim instanceof Aim) {
 			this.setAim((Aim) aim);
 		} else {
-			throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
+			throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class Diagram {
 			if (task instanceof Aim) {
 				nbAim++;
 				if (nbAim > 1) {
-					throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
+					throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 				}
 				this.setAim((Aim) task);
 				tasks.add(task);
@@ -74,13 +75,13 @@ public class Diagram {
 			}
 		}
 		if (!tasksNameError.toString().equals("")) {
-			throw new ComplianceException("Task :" + tasksNameError.toString() + " Should have Next");
+			throw new ComplianceException(Message.TASK_SHOULD_HAVE_NEXT + tasksNameError.toString());
 		}
 	}
 
 	public void addTask(Task task) {
 		if (task instanceof Aim) {
-			throw new ComplianceException(YOU_HAVE_ONE_AND_ONLY_ONE_AIM);
+			throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 		} else {
 			tasks.add(task);
 			if (!task.hasPrevious()) {
@@ -128,7 +129,7 @@ public class Diagram {
 			}
 			Collections.sort(this.feasibleTask);
 		} else {
-			throw new ComplianceException("the task is not in diagram");
+			throw new ComplianceException(Message.TASK_NOT_IN_DIAGRAM);
 		}
 	}
 

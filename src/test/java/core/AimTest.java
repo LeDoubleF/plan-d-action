@@ -8,6 +8,8 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.Message;
+
 public class AimTest {
 	Task aim;
 
@@ -33,7 +35,7 @@ public class AimTest {
 			aim.addNext(next);
 			fail("Should throw exception when try to set next");
 		} catch (UnsupportedOperationException aExp) {
-			assertTrue (aExp.getMessage().contains("a aim can't have next"));
+			assertTrue (aExp.getMessage().contains(Message.ERROR_NO_NEXT));
 		}
 	}
 	

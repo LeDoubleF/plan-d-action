@@ -13,6 +13,7 @@ import core.Aim;
 import core.Diagram;
 import core.Task;
 import exception.FileReaderException;
+import exception.Message;
 
 public class CSVReader {
 	List<Task> tasks = new ArrayList<>();
@@ -22,7 +23,7 @@ public class CSVReader {
 	public CSVReader(String filePath) throws IOException {
 		super();
 
-tasksInfo = readFile(filePath);
+		tasksInfo = readFile(filePath);
 
 		computeTaskList(tasksInfo);
 
@@ -50,7 +51,7 @@ tasksInfo = readFile(filePath);
 	private void computeTaskList(HashMap<String, List<String>> tasksInfo) {
 		for (Entry<String, List<String>> entry : tasksInfo.entrySet()) {
 			String name = entry.getKey();
-			
+
 			Task task;
 			if (entry.getValue().isEmpty()) {
 				task = new Aim(name);
@@ -69,9 +70,9 @@ tasksInfo = readFile(filePath);
 
 			while ((line = fichierSource.readLine()) != null) {
 				String[] tabChaine = line.split(";");
-				String taskName=tabChaine[0].trim();
+				String taskName = tabChaine[0].trim();
 				if (taskName.equals("")) {
-					throw new FileReaderException("erreur dans les donées du fichier");
+					throw new FileReaderException(Message.FILE_CONTENT_KO);
 				}
 				List<String> next = new ArrayList<>();
 				for (int i = 1; i < tabChaine.length; i++) {
@@ -81,15 +82,16 @@ tasksInfo = readFile(filePath);
 			}
 
 		} catch (FileNotFoundException e) {
-			throw new FileReaderException("Le fichier est introuvable !");
+			throw new FileReaderException(Message.NO_FILE);
 		}
 		return value;
 	}
- public String toString(){
-	 StringBuilder  returnValue=new StringBuilder ();
-	 for (Entry<String, List<String>> entry : tasksInfo.entrySet()) {
-			returnValue.append((entry.getKey() + "/" + entry.getValue()+"\n"));
+
+	public String toString() {
+		StringBuilder returnValue = new StringBuilder();
+		for (Entry<String, List<String>> entry : tasksInfo.entrySet()) {
+			returnValue.append((entry.getKey() + "/" + entry.getValue() + "\n"));
 		}
-	return returnValue.toString();
- }
+		return returnValue.toString();
+	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 import exception.ComplianceException;
+import exception.Message;
 
 public class Task implements Comparable<Task> {
 	private String name;
@@ -16,8 +17,9 @@ public class Task implements Comparable<Task> {
 
 	public Task(String name) {
 		super();
-		if (name == null || name.trim().equals(""))
-			throw new ComplianceException("A task should have a name");
+		if (name == null || name.trim().equals("")) {
+			throw new ComplianceException(Message.TASK_NEED_NAME);
+		}
 		this.name = name.trim();
 	}
 
@@ -87,7 +89,7 @@ public class Task implements Comparable<Task> {
 	private void verifyNoCycle(Task task) {
 		List<Task> priors = new ArrayList<>();
 		if (!hasFinal(task, priors)) {
-			throw new ComplianceException("Shouldn't have cycle");
+			throw new ComplianceException(Message.NO_CYCLE);
 		}
 	}
 

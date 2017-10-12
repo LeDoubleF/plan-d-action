@@ -12,6 +12,7 @@ import org.junit.Test;
 import core.Diagram;
 import core.Task;
 import exception.FileReaderException;
+import exception.Message;
 
 public class CSVReaderTest {
 
@@ -46,7 +47,7 @@ public class CSVReaderTest {
 			fail("Should throw exception when the file is not ok");
 		} catch (Exception aExp) {
 			String message = aExp.getMessage();
-			assertTrue(message.contains("erreur dans les donées du fichier"));
+			assertTrue(message.contains(Message.FILE_CONTENT_KO));
 		}
 	}
 	@Test
@@ -70,7 +71,7 @@ public class CSVReaderTest {
 			fail("Should throw exception when the file is not ok");
 		} catch (FileReaderException aExp) {
 			String message = aExp.getMessage();
-			assertTrue(message.contains("Le fichier est introuvable"));
+			assertTrue(message.contains(Message.NO_FILE));
 		}
 	}
 	

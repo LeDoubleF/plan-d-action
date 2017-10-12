@@ -14,6 +14,7 @@ import core.Aim;
 import core.Diagram;
 import core.Task;
 import exception.ComplianceException;
+import exception.Message;
 
 @SuppressWarnings("unused")
 public class DiagramTest {
@@ -63,7 +64,7 @@ public class DiagramTest {
 			Diagram simpleDiagramWithTwoAim = new Diagram(TaskListWithTwoAim);
 			fail("Should throw exception when a list of task have two aims");
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("You have one and only one aim"));
+			assertTrue(aExp.getMessage().contains(Message.ONE_AND_ONLY_ONE_AIM));
 		}
 	}
 
@@ -74,7 +75,7 @@ public class DiagramTest {
 			Diagram simpleDiagram = new Diagram(taskA);
 			fail("Should throw exception when a diagram not have aim");
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("You have one and only one aim"));
+			assertTrue(aExp.getMessage().contains(Message.ONE_AND_ONLY_ONE_AIM));
 		}
 	}
 
@@ -91,7 +92,9 @@ public class DiagramTest {
 		try {
 			Diagram wrongDiagram = new Diagram(listForWrongDiagram);
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("Task : " + solo.getName() + " Should have Next"));
+			String message = aExp.getMessage();
+			assertTrue(message.contains(Message.TASK_SHOULD_HAVE_NEXT ));
+			assertTrue(message.contains(solo.getName() ));
 		}
 	}
 
@@ -117,7 +120,7 @@ public class DiagramTest {
 			fail("Should throw exception when a diagram have a task with no next in the diagram");
 		} catch (Exception aExp) {
 			String message = aExp.getMessage();
-			assertTrue(message.contains(" Should have Next"));
+			assertTrue(message.contains(Message.TASK_SHOULD_HAVE_NEXT));
 			assertTrue(message.contains(solo.getName()));
 			assertTrue(message.contains(duo.getName()));
 		}
@@ -164,7 +167,7 @@ public class DiagramTest {
 			fail("Should throw exception when you add a  new aim into the diagram");
 		} catch (Exception aExp) {
 			String message = aExp.getMessage();
-			assertTrue(message.contains("You have one and only one aim"));
+			assertTrue(message.contains(Message.ONE_AND_ONLY_ONE_AIM));
 		}
 	}
 
@@ -198,7 +201,7 @@ public class DiagramTest {
 			fail("Should throw exception when you finish a task which is not into the diagram");
 		} catch (Exception aExp) {
 			String message = aExp.getMessage();
-			assertTrue(message.contains("the task is not in diagram"));
+			assertTrue(message.contains(Message.TASK_NOT_IN_DIAGRAM));
 		}
 	}
 	@Test

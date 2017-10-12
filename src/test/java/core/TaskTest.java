@@ -8,6 +8,8 @@ import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.Test;
 
+import exception.Message;
+
 public class TaskTest {
 	private static final String NEW_NAME = "newName";
 	private static final String NAME = "test";
@@ -24,7 +26,7 @@ public class TaskTest {
 			task = new Task(null);
 			fail("Should throw exception when a task don't have a name");
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("A task should have a name"));
+			assertTrue(aExp.getMessage().contains(Message.TASK_NEED_NAME));
 		}
 	}
 
@@ -34,7 +36,7 @@ public class TaskTest {
 			task = new Task(" ");
 			fail("Should throw exception when a task don't have a name");
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("A task should have a name"));
+			assertTrue(aExp.getMessage().contains(Message.TASK_NEED_NAME));
 		}
 	}
 
@@ -159,7 +161,7 @@ public class TaskTest {
 	}
 
 	@Test
-	public void isFinalize(){
+	public void isFinish(){
 		
 		task.setProgress(50);
 		assertTrue(task.getProgress() == 50);
@@ -197,7 +199,7 @@ public class TaskTest {
 
 			fail("Should throw exception when a diagram have a cycle");
 		} catch (Exception aExp) {
-			assertTrue(aExp.getMessage().contains("Shouldn't have cycle"));
+			assertTrue(aExp.getMessage().contains(Message.NO_CYCLE));
 		}
 	}
 
