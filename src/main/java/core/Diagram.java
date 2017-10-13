@@ -3,6 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import exception.ComplianceException;
@@ -12,15 +13,21 @@ public class Diagram {
 
 	private Aim aim;
 	private List<Task> tasks = new ArrayList<>();
-
+	private HashMap<String, Task> tasksByName = new HashMap<>();
 	private List<Task> feasibleTask = new ArrayList<>();
 
 	public Diagram(Task aim) {
 		if (aim instanceof Aim) {
 			this.setAim((Aim) aim);
+			addTaskAndName(aim);
 		} else {
 			throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 		}
+	}
+
+	private void addTaskAndName(Task aim) {
+		tasks.add(aim);
+		tasksByName.put(aim.getName(), aim);
 	}
 
 	public Diagram(List<Task> taskList) {
@@ -39,9 +46,9 @@ public class Diagram {
 					throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 				}
 				this.setAim((Aim) task);
-				tasks.add(task);
+				addTaskAndName(task);
 			} else {
-				tasks.add(task);
+				addTaskAndName(task);
 				if (!task.hasPrevious()) {
 					feasibleTask.add(task);
 				}
@@ -83,7 +90,7 @@ public class Diagram {
 		if (task instanceof Aim) {
 			throw new ComplianceException(Message.ONE_AND_ONLY_ONE_AIM);
 		} else {
-			tasks.add(task);
+			addTaskAndName(task);
 			if (!task.hasPrevious()) {
 				feasibleTask.add(task);
 			}
@@ -123,6 +130,7 @@ public class Diagram {
 			task.finish();
 			if (feasibleTask.contains(task)) {
 				feasibleTask.remove(task);
+				addNextInFeasibleTask(task);
 			}  
 			else{
 				removePreviousFromFeasibleTask(task);
@@ -145,5 +153,22 @@ public class Diagram {
 				feasibleTask.remove(previous);
 			}
 		}
+	}
+	private void addNextInFeasibleTask(Task task) {
+		for(Task next:task.getNext()){
+			boolean isFeasible=true;
+			for(Task nextPrevious:next.getPrevious()){
+				if(!nextPrevious.isFinish() ){
+					isFeasible=false;
+				}
+			}
+			if(isFeasible){
+				feasibleTask.add(next);
+			}
+		}
+	}
+
+	public Task getTaskByName(String taskName) {
+		return tasksByName.get(taskName);
 	}
 }

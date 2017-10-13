@@ -48,6 +48,13 @@ public class DiagramTest {
 
 	@Test
 	public void diagramHaveTheGoodAim() {
+		assertEquals(aim, goodDiagram.getTaskByName("aim"));
+		assertEquals(taskA, goodDiagram.getTaskByName("A"));
+		assertEquals(taskC, goodDiagram.getTaskByName("C"));
+	}
+	
+	@Test
+	public void getTaskBynamem() {
 		Diagram simpleDiagram = new Diagram(aim);
 		assertEquals(aim, simpleDiagram.getAim());
 	}
