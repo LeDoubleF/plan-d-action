@@ -50,4 +50,17 @@ public class ActionPlan {
 	public void finish(String taskName) {
 		diagram.finish(diagram.getTaskByName(taskName));
 	}
+	
+	
+	public String getTaskNameAndWeight() {
+		StringBuilder taskNameAndOrder = new StringBuilder();
+		for (Task task : diagram.getTasks()) {
+			taskNameAndOrder.append(task.getName());
+			taskNameAndOrder.append(":");
+			taskNameAndOrder.append(task.getWeight());
+			taskNameAndOrder.append(" ");
+		}
+		return taskNameAndOrder.toString();
+	}
+
 }

@@ -75,4 +75,26 @@ public class ActionPlanTest {
 		assertTrue(feasibleTask.contains("D"));
 		assertFalse(feasibleTask.contains("E"));
 	}
+
+	@Test
+	public void getTaskNameAndWeight() {
+		ActionPlan plan = new ActionPlan("aim");
+		plan.addTask("C", "aim");
+		plan.addTask("D", "aim");
+		plan.addTask("B", "aim", "D");
+		plan.addTask("A", "D");
+
+		String feasibleTask = plan.getFeasibleTaskName();
+		assertTrue(feasibleTask.contains("A"));
+		assertTrue(feasibleTask.contains("B"));
+		assertTrue(feasibleTask.contains("C"));
+		assertFalse(feasibleTask.contains("D"));
+
+		String taskNameAndWeight = plan.getTaskNameAndWeight();
+		assertTrue(taskNameAndWeight.contains("A:2"));
+		assertTrue(taskNameAndWeight.contains("B:3"));
+		assertTrue(taskNameAndWeight.contains("C:1"));
+		assertTrue(taskNameAndWeight.contains("D:1"));
+		assertTrue(taskNameAndWeight.contains("aim:0"));
+	}
 }
