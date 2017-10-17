@@ -1,5 +1,10 @@
 package api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import core.Aim;
@@ -7,6 +12,8 @@ import core.Diagram;
 import core.Task;
 import exception.ComplianceException;
 import exception.Message;
+import io.CSVReader;
+import io.CSVWriter;
 
 public class ActionPlan {
 	private Diagram diagram;
@@ -50,8 +57,7 @@ public class ActionPlan {
 	public void finish(String taskName) {
 		diagram.finish(diagram.getTaskByName(taskName));
 	}
-	
-	
+
 	public String getTaskNameAndWeight() {
 		StringBuilder taskNameAndOrder = new StringBuilder();
 		for (Task task : diagram.getTasks()) {
@@ -61,6 +67,19 @@ public class ActionPlan {
 			taskNameAndOrder.append(" ");
 		}
 		return taskNameAndOrder.toString();
+	}
+
+	public void readCsvFile(String filePath) throws IOException {
+
+		CSVReader csvReader = new CSVReader(filePath);
+
+		diagram = csvReader.getDiagram();
+	}
+
+	public void writeCsvFile(String filePath) throws IOException {
+
+		CSVWriter csvWriter = new CSVWriter(diagram, filePath);
+
 	}
 
 }

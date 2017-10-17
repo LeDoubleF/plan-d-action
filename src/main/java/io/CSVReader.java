@@ -15,7 +15,7 @@ import core.Task;
 import exception.FileReaderException;
 import exception.Message;
 
-public class CSVReader {
+public class CSVReader extends CsvIO {
 	List<Task> tasks = new ArrayList<>();
 	HashMap<String, Task> tasksByName = new HashMap<>();
 	HashMap<String, List<String>> tasksInfo;
@@ -69,7 +69,7 @@ public class CSVReader {
 			String line;
 
 			while ((line = fichierSource.readLine()) != null) {
-				String[] tabChaine = line.split(";");
+				String[] tabChaine = line.split(COMMA_DELIMITER);
 				String taskName = tabChaine[0].trim();
 				if (taskName.equals("")) {
 					throw new FileReaderException(Message.FILE_CONTENT_KO);
