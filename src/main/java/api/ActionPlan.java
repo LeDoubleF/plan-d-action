@@ -18,6 +18,9 @@ import io.CSVWriter;
 public class ActionPlan {
 	private Diagram diagram;
 
+	public ActionPlan() {
+		super();
+	}
 	public ActionPlan(String aimName) {
 		super();
 		Aim aim = new Aim(aimName);
